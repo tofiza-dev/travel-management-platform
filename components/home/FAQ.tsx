@@ -1,68 +1,106 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { faqs } from "@/lib/mock-data";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { MessageCircle, Phone, Plus } from "lucide-react";
+import { faqs } from "@/lib/content/coxs-bazar";
+import { CONTACT } from "@/lib/config/contact";
+import { EASE, Reveal } from "@/components/motion/Reveal";
 
+/** Two columns: the question list scrolls, the heading and a way to reach a person stay put. */
 export default function FAQ() {
-  const [open, setOpen] = useState<string | null>(faqs[0]?.id);
+  const reduced = useReducedMotion();
+  const [open, setOpen] = useState<string | null>(faqs[0]?.id ?? null);
 
   return (
-    <section className="py-16 lg:py-24 bg-white">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <p className="text-brand-600 text-sm font-semibold uppercase tracking-widest mb-2">
-            Got Questions?
-          </p>
-          <h2 className="text-3xl lg:text-4xl font-bold text-slate-900">
-            Frequently asked questions
-          </h2>
-          <p className="text-slate-500 mt-3 text-base">
-            Everything you need to know about Tofiza. Can't find an answer?{" "}
-            <a href="/contact" className="text-brand-600 hover:underline font-medium">
-              Contact us
-            </a>
-          </p>
+    <section id="faq" className="relative bg-white scroll-mt-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 grid lg:grid-cols-12 gap-10 lg:gap-16">
+        <div className="lg:col-span-4">
+          <div className="lg:sticky lg:top-28">
+            <Reveal>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-secondary-600 mb-3 flex items-center gap-3">
+                <span aria-hidden="true" className="h-px w-8 bg-secondary-500/60" />
+                Good to know
+              </p>
+              <h2 className="font-display text-4xl lg:text-5xl font-semibold leading-[1.05] text-brand-900 text-balance">
+                Questions about <span className="italic text-secondary-600">Cox&apos;s Bazar</span>, answered
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <div className="mt-8 rounded-3xl bg-sand-100 border border-sand-300/60 p-6">
+                <p className="flex items-center gap-2 font-semibold text-brand-900">
+                  <MessageCircle size={18} className="i-sway text-secondary-500" aria-hidden="true" />
+                  Still unsure?
+                </p>
+                <p className="mt-1.5 text-sm text-slate-600">A person will pick up, at any hour.</p>
+                <a
+                  href={`tel:${CONTACT.phoneE164}`}
+                  className="mt-4 inline-flex items-center gap-2 rounded-full bg-brand-600 px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-700"
+                >
+                  <Phone size={15} className="i-ring" aria-hidden="true" />
+                  {CONTACT.phone}
+                </a>
+              </div>
+            </Reveal>
+          </div>
         </div>
 
-        <div className="space-y-3">
-          {faqs.map((faq) => {
-            const isOpen = open === faq.id;
-            return (
-              <div
-                key={faq.id}
-                className={`border rounded-2xl overflow-hidden transition-all duration-200 ${
-                  isOpen ? "border-brand-200 shadow-sm" : "border-slate-200"
-                }`}
-              >
-                <button
-                  onClick={() => setOpen(isOpen ? null : faq.id)}
-                  className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-50 transition-colors"
-                  aria-expanded={isOpen}
-                >
-                  <span
-                    className={`font-semibold text-sm leading-snug pr-4 ${
-                      isOpen ? "text-brand-700" : "text-slate-800"
-                    }`}
-                  >
-                    {faq.question}
-                  </span>
-                  <span className="shrink-0">
-                    {isOpen ? (
-                      <ChevronUp size={18} className="text-brand-500" />
-                    ) : (
-                      <ChevronDown size={18} className="text-slate-400" />
-                    )}
-                  </span>
-                </button>
-                {isOpen && (
-                  <div className="px-5 pb-5 pt-0">
-                    <p className="text-slate-600 text-sm leading-relaxed">{faq.answer}</p>
+        <div className="lg:col-span-8">
+          <div className="divide-y divide-sand-300/70 border-y border-sand-300/70">
+            {faqs.map((faq, i) => {
+              const isOpen = open === faq.id;
+              return (
+                <Reveal key={faq.id} delay={Math.min(i, 4) * 0.05}>
+                  <div>
+                    <h3>
+                      <button
+                        type="button"
+                        onClick={() => setOpen(isOpen ? null : faq.id)}
+                        aria-expanded={isOpen}
+                        aria-controls={`${faq.id}-panel`}
+                        className="group flex w-full items-center justify-between gap-6 py-5 text-left"
+                      >
+                        <span
+                          className={`font-display text-lg sm:text-xl font-semibold leading-snug transition-colors ${
+                            isOpen ? "text-brand-600" : "text-brand-900 group-hover:text-brand-600"
+                          }`}
+                        >
+                          {faq.question}
+                        </span>
+                        <motion.span
+                          aria-hidden="true"
+                          animate={{ rotate: isOpen ? 45 : 0 }}
+                          transition={{ duration: reduced ? 0 : 0.3, ease: EASE }}
+                          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors ${
+                            isOpen
+                              ? "border-secondary-500 bg-secondary-500 text-white"
+                              : "border-sand-300 text-slate-500 group-hover:border-brand-400"
+                          }`}
+                        >
+                          <Plus size={16} />
+                        </motion.span>
+                      </button>
+                    </h3>
+                    <AnimatePresence initial={false}>
+                      {isOpen && (
+                        <motion.div
+                          id={`${faq.id}-panel`}
+                          role="region"
+                          initial={reduced ? false : { height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={reduced ? undefined : { height: 0, opacity: 0 }}
+                          transition={{ duration: 0.4, ease: EASE }}
+                          className="overflow-hidden"
+                        >
+                          <p className="pb-6 pr-12 text-[15px] leading-relaxed text-slate-600">{faq.answer}</p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
-                )}
-              </div>
-            );
-          })}
+                </Reveal>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

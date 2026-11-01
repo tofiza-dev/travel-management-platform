@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Phone, Mail, Search, CalendarCheck, CreditCard, RotateCcw } from "lucide-react";
-import { faqs } from "@/lib/mock-data";
+import { faqs } from "@/lib/content/coxs-bazar";
 import { CONTACT } from "@/lib/config/contact";
 
 export const metadata: Metadata = {

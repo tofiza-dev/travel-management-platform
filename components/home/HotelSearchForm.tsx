@@ -6,11 +6,19 @@ import { Users, Search, ChevronDown, BedDouble } from "lucide-react";
 import DatePicker from "@/components/ui/DatePicker";
 import CityInput from "@/components/ui/CityInput";
 import { todayISO } from "@/lib/utils/formatters";
+import { LAUNCH } from "@/lib/config/launch";
 
-export default function HotelSearchForm({ cities = [] }: { cities?: string[] }) {
+export default function HotelSearchForm({
+  cities = [],
+  defaultDestination = "",
+}: {
+  cities?: string[];
+  /** Prefilled but editable — the launch city, so most guests need not type. */
+  defaultDestination?: string;
+}) {
   const today = todayISO();
   const router = useRouter();
-  const [destination, setDestination] = useState("");
+  const [destination, setDestination] = useState(defaultDestination);
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [adults, setAdults] = useState(2);
@@ -36,7 +44,7 @@ export default function HotelSearchForm({ cities = [] }: { cities?: string[] }) 
         onChange={setDestination}
         cities={cities}
         onSubmit={handleSearch}
-        hint="e.g. Cox's Bazar, Dhaka, Dubai"
+        hint={LAUNCH.searchHint}
       />
 
       {/* ── Row 2: Check-in | Check-out ──────────────────── */}
@@ -64,11 +72,11 @@ export default function HotelSearchForm({ cities = [] }: { cities?: string[] }) 
           <button
             type="button"
             onClick={() => setShowGuestDrop(!showGuestDrop)}
-            className="w-full text-left border border-slate-200 hover:border-brand-400 rounded-xl px-3 py-2.5 transition-all"
+            className="group w-full text-left border border-slate-200 hover:border-brand-400 rounded-xl px-3 py-2.5 transition-all"
           >
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Guests</p>
             <div className="flex items-center gap-1.5">
-              <Users size={14} className="text-brand-500 shrink-0" />
+              <Users size={14} className="ih-pop text-brand-500 shrink-0" />
               <span className="text-sm font-bold text-slate-800 truncate">
                 {guests} Guest{guests > 1 ? "s" : ""}
               </span>
@@ -115,10 +123,10 @@ export default function HotelSearchForm({ cities = [] }: { cities?: string[] }) 
         </div>
 
         {/* Rooms counter */}
-        <div className="min-w-0 border border-slate-200 rounded-xl px-3 py-2.5">
+        <div className="group min-w-0 border border-slate-200 rounded-xl px-3 py-2.5">
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Rooms</p>
           <div className="flex items-center gap-1.5">
-            <BedDouble size={14} className="text-brand-500 shrink-0" />
+            <BedDouble size={14} className="ih-pop text-brand-500 shrink-0" />
             <span className="text-sm font-bold text-slate-800 truncate flex-1">
               {rooms} Room{rooms > 1 ? "s" : ""}
             </span>
@@ -142,9 +150,9 @@ export default function HotelSearchForm({ cities = [] }: { cities?: string[] }) 
       <div className="mt-2 flex justify-center">
         <button
           onClick={handleSearch}
-          className="flex items-center gap-2.5 px-10 py-3 bg-secondary-500 hover:bg-secondary-600 active:bg-secondary-700 text-white font-bold text-sm rounded-full shadow-lg hover:shadow-xl transition-all duration-200"
+          className="group flex items-center gap-2.5 px-10 py-3 bg-secondary-500 hover:bg-secondary-600 active:bg-secondary-700 text-white font-bold text-sm rounded-full shadow-lg hover:shadow-xl transition-all duration-200"
         >
-          <Search size={16} />
+          <Search size={16} className="ih-wiggle" />
           Search Hotels
         </button>
       </div>

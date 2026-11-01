@@ -11,12 +11,12 @@ import BecomePartnerForm from "./BecomePartnerForm";
 export const metadata: Metadata = {
   title: "List your property · Tofiza",
   description:
-    "Partner with Tofiza to list your hotel or resort, manage rates and availability, and take bookings across Bangladesh.",
+    "Partner with Tofiza to list your hotel or resort, manage rates and availability, and take bookings from travellers heading to Cox's Bazar.",
 };
 
 const SELLING_POINTS = [
   { icon: BedDouble, text: "List unlimited rooms, set your own rates and availability" },
-  { icon: TrendingUp, text: "Reach travellers searching across Bangladesh and beyond" },
+  { icon: TrendingUp, text: "Reach travellers searching for a stay in Cox's Bazar" },
   { icon: Wallet, text: "Track every booking and withdraw earnings from one dashboard" },
 ];
 

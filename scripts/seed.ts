@@ -19,7 +19,6 @@ import {
   Destination, Offer,
   generateBookingRef, deriveDisplayRating, SETTINGS_DEFAULTS,
 } from "@/lib/models";
-import { featuredDestinations, promoOffers } from "@/lib/mock-data";
 import { slugify } from "@/lib/cache/tags";
 import { v2 as cloudinary } from "cloudinary";
 
@@ -506,38 +505,26 @@ async function main() {
   }
   console.log(`→ bookings: ${bookingCount}, reviews: ${reviewCount}`);
 
-  // ── homepage carousels, now editable under Admin → Content ───────────────
-  // Seeded from the old hard-coded fixtures so the homepage is not blank on a
-  // fresh database; everything here is editable in the admin afterwards.
-  await Destination.insertMany(
-    featuredDestinations.map((d, i) => ({
-      city: d.city,
-      country: d.country,
-      description: d.description,
-      image: { publicId: `seed/destination-${slugify(d.city)}`, url: d.image, width: 1200, height: 600, alt: d.city },
-      startingPrice: d.startingPrice,
-      currency: d.currency,
-      flightDuration: d.flightDuration,
-      order: i,
-      status: "published",
-    })),
-  );
-
-  await Offer.insertMany(
-    promoOffers.map((o, i) => ({
-      title: o.title,
-      description: o.description,
-      image: { publicId: `seed/offer-${slugify(o.title)}`, url: o.image, width: 1200, height: 600, alt: o.title },
-      discount: o.discount,
-      code: o.code,
-      type: o.type,
-      // The fixture dates are in the past; give every seeded promo a live window.
-      expiresAt: day(30 + i * 15),
-      order: i,
-      status: "published",
-    })),
-  );
-  console.log(`→ homepage: ${featuredDestinations.length} destinations, ${promoOffers.length} offers`);
+  // ── homepage offer ───────────────────────────────────────────────────────
+  // One offer, backed by the platform coupon created just below, so the
+  // homepage never advertises a code that does not exist. The homepage no
+  // longer reads Destination rows — it describes the launch city itself.
+  await Offer.create({
+    title: "৳500 off your Cox's Bazar stay",
+    description: "Book a stay over ৳10,000 and take ৳500 off at checkout.",
+    image: {
+      publicId: "seed/offer-tofiza500",
+      url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80",
+      width: 1200, height: 600, alt: "Cox's Bazar beach",
+    },
+    discount: "৳500 OFF",
+    code: "TOFIZA500",
+    type: "hotel",
+    expiresAt: day(60),
+    order: 0,
+    status: "published",
+  });
+  console.log("→ homepage: 1 offer");
 
   // ── a coupon and a pending payout, so the admin queues are not empty ──────
   await Coupon.create({

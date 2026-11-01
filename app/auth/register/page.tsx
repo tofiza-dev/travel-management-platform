@@ -5,7 +5,7 @@ import RegisterForm from "./RegisterForm";
 
 export const metadata: Metadata = {
   title: "Create account · Tofiza",
-  description: "Create a free Tofiza account to book flights and hotels across Bangladesh and beyond.",
+  description: "Create a free Tofiza account to book hotels in Cox's Bazar.",
 };
 
 export default function RegisterPage() {

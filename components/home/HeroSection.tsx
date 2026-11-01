@@ -5,6 +5,7 @@ import { Plane, Building2, FileText, TreePalm, Clock } from "lucide-react";
 import FlightSearchForm from "./FlightSearchForm";
 import HotelSearchForm from "./HotelSearchForm";
 import { FEATURES } from "@/lib/config/features";
+import { LAUNCH } from "@/lib/config/launch";
 
 type Tab = "flight" | "hotel" | "visa" | "tours";
 
@@ -48,6 +49,7 @@ export default function HeroSection({ cities = [] }: { cities?: string[] }) {
       />
 
       {/* Content */}
+      <h1 className="sr-only">Hotels in {LAUNCH.city} — book verified beachside stays</h1>
       <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center pt-32 pb-16 gap-8">
         {/* Capsule tab selector */}
         <div className="flex items-center bg-white/15 backdrop-blur-md border border-white/25 rounded-full p-1 sm:p-1.5 gap-0.5 sm:gap-1 shadow-xl w-full sm:w-auto">
@@ -55,7 +57,7 @@ export default function HeroSection({ cities = [] }: { cities?: string[] }) {
             <button
               key={id}
               onClick={() => setActiveTab(id)}
-              className={`flex flex-1 sm:flex-initial flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-2 px-1 sm:px-6 py-1.5 sm:py-2.5 rounded-full text-[10px] sm:text-sm font-semibold transition-all duration-200 ${
+              className={`group flex flex-1 sm:flex-initial flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-2 px-1 sm:px-6 py-1.5 sm:py-2.5 rounded-full text-[10px] sm:text-sm font-semibold transition-all duration-200 ${
                 activeTab === id
                   ? "bg-white text-brand-700 shadow-md"
                   : "text-white hover:bg-white/10"
@@ -64,7 +66,9 @@ export default function HeroSection({ cities = [] }: { cities?: string[] }) {
             >
               <Icon
                 size={16}
-                className={activeTab === id ? "text-brand-600" : "text-white"}
+                className={`${id === "flight" ? "ih-fly" : "ih-wiggle"} ${
+                  activeTab === id ? "text-brand-600" : "text-white"
+                }`}
               />
               {label}
             </button>
@@ -73,19 +77,19 @@ export default function HeroSection({ cities = [] }: { cities?: string[] }) {
 
         {/* Search / coming-soon card */}
         <div className="w-full bg-white rounded-2xl shadow-2xl overflow-visible">
-          {activeTab === "hotel" && <HotelSearchForm cities={cities} />}
+          {activeTab === "hotel" && <HotelSearchForm cities={cities} defaultDestination={LAUNCH.city} />}
           {activeTab === "flight" && FEATURES.flights && <FlightSearchForm />}
           {!LIVE.includes(activeTab) && (
             <div className="flex flex-col items-center justify-center text-center py-16 px-6">
               <div className="w-14 h-14 rounded-full bg-brand-50 flex items-center justify-center mb-4">
-                <Clock size={26} className="text-brand-500" />
+                <Clock size={26} className="i-tock text-brand-500" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-1.5">
                 {activeMeta.label} booking is coming soon
               </h3>
               <p className="text-slate-500 text-sm max-w-sm">
                 We are still building this one. In the meantime, book your stay with Tofiza — hotels
-                are live across Bangladesh and beyond.
+                are live in {LAUNCH.city}.
               </p>
               <button
                 type="button"

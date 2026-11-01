@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,14 +12,24 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// Display serif for headlines — gives the page an editorial voice next to Geist.
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  axes: ["opsz"],
+});
+
 export const metadata: Metadata = {
-  title: "Tofiza Tours & Travels",
+  title: {
+    default: "Tofiza Tours & Travels — Hotels in Cox's Bazar",
+    template: "%s",
+  },
   description:
-    "Tofiza is your premium travel companion. Book flights and hotels at the best prices with instant confirmation.",
-  keywords: ["flight booking", "hotel booking", "travel", "tofiza"],
+    "Book verified beachside hotels in Cox's Bazar with live rates, a room held while you pay, and instant confirmation. Local support from our Kolatoli office.",
+  keywords: ["Cox's Bazar hotels", "Kolatoli hotels", "hotel booking Bangladesh", "tofiza"],
   openGraph: {
-    title: "Tofiza Tours & Travels",
-    description: "Your premium travel companion for flights and hotels.",
+    title: "Tofiza — Hotels in Cox's Bazar",
+    description: "Verified beachside stays in Cox's Bazar, booked end to end.",
     type: "website",
   },
 };
@@ -32,7 +42,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable}`}
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-background text-foreground antialiased">

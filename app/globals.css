@@ -39,8 +39,19 @@
   --color-secondary-800: #9a3412;
   --color-secondary-900: #7c2d12;
   --color-secondary-950: #431407;
+  /* Sand and sea: the coastal pair that sits beside the navy brand. */
+  --color-sand: #f6efe4;
+  --color-sand-50: #fcf9f4;
+  --color-sand-100: #f6efe4;
+  --color-sand-200: #ecdfca;
+  --color-sand-300: #dcc8a6;
+  --color-sea-300: #7fd1d6;
+  --color-sea-400: #3fb7c0;
+  --color-sea-500: #1e98a6;
+  --color-sea-600: #187b88;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-fraunces), Georgia, serif;
 }
 
 .dark {
@@ -149,4 +160,213 @@ button:focus-visible {
   box-shadow:
     0 1px 2px rgba(15, 23, 42, 0.03),
     0 6px 20px rgba(15, 23, 42, 0.05);
+}
+
+/* ── Homepage motion & texture ─────────────────────────────────────────────
+   Everything below is decoration. Each animation is switched off under
+   prefers-reduced-motion at the bottom of this block. */
+
+.font-display {
+  font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+}
+
+/* Film grain, so large flat colour fields read as paper rather than plastic. */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+@keyframes wave-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-wave {
+  animation: wave-drift 18s linear infinite;
+}
+.animate-wave-slow {
+  animation: wave-drift 32s linear infinite;
+}
+
+@keyframes ping-ring {
+  0% { transform: scale(0.6); opacity: 0.7; }
+  80%, 100% { transform: scale(2.4); opacity: 0; }
+}
+.animate-ping-ring {
+  animation: ping-ring 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float {
+  animation: float-y 6s ease-in-out infinite;
+}
+
+@keyframes sheen {
+  from { transform: translateX(-120%) skewX(-18deg); }
+  to { transform: translateX(260%) skewX(-18deg); }
+}
+.sheen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: translateX(-120%) skewX(-18deg);
+  pointer-events: none;
+}
+.sheen:hover::before {
+  animation: sheen 0.9s ease-out;
+}
+
+/* Gradient hairline border, for premium cards. */
+.gradient-border {
+  position: relative;
+}
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.06) 40%, rgba(249, 115, 22, 0.35));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Icon motion ───────────────────────────────────────────────────────────
+   A small vocabulary so every icon has a personality. `i-*` classes play on
+   their own, gently; `ih-*` classes play while the icon, or any ancestor
+   marked `group`, is hovered. Set a stagger with `[--d:0.6s]` on the icon. */
+
+@keyframes i-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+@keyframes i-sway {
+  0%, 100% { transform: rotate(-8deg); }
+  50% { transform: rotate(8deg); }
+}
+@keyframes i-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.14); }
+}
+@keyframes i-ring {
+  0%, 62%, 100% { transform: rotate(0); }
+  66% { transform: rotate(-16deg); }
+  72% { transform: rotate(14deg); }
+  78% { transform: rotate(-12deg); }
+  84% { transform: rotate(10deg); }
+  90% { transform: rotate(-5deg); }
+}
+@keyframes i-pin {
+  0%, 55%, 100% { transform: translateY(0) scale(1, 1); }
+  65% { transform: translateY(1px) scale(1.12, 0.88); }
+  78% { transform: translateY(-5px) scale(0.94, 1.08); }
+  90% { transform: translateY(0) scale(1.06, 0.94); }
+}
+@keyframes i-twinkle {
+  0%, 100% { transform: scale(1) rotate(0); opacity: 1; }
+  45% { transform: scale(1.3) rotate(18deg); opacity: 0.85; }
+  60% { transform: scale(0.92) rotate(-6deg); opacity: 1; }
+}
+@keyframes i-tock {
+  0%, 100% { transform: rotate(-9deg); }
+  50% { transform: rotate(9deg); }
+}
+@keyframes i-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+@keyframes i-nudge-ne {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(3px, -3px); }
+}
+@keyframes i-popin {
+  0% { transform: scale(0) rotate(-40deg); }
+  70% { transform: scale(1.35) rotate(8deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+@keyframes ih-pop {
+  0% { transform: scale(1) rotate(0); }
+  40% { transform: scale(1.3) rotate(-10deg); }
+  70% { transform: scale(1.1) rotate(6deg); }
+  100% { transform: scale(1.18) rotate(0); }
+}
+@keyframes ih-wiggle {
+  0%, 100% { transform: rotate(0); }
+  20% { transform: rotate(-14deg); }
+  40% { transform: rotate(12deg); }
+  60% { transform: rotate(-8deg); }
+  80% { transform: rotate(5deg); }
+}
+@keyframes ih-fly {
+  0% { transform: translate(0, 0) rotate(0); }
+  45% { transform: translate(9px, -9px) rotate(-8deg); opacity: 0.2; }
+  46% { transform: translate(-9px, 9px) rotate(-8deg); opacity: 0; }
+  100% { transform: translate(0, 0) rotate(0); opacity: 1; }
+}
+@keyframes ih-drive {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px) rotate(-2deg); }
+  50% { transform: translateX(2px) rotate(1deg); }
+  75% { transform: translateX(-1.5px) rotate(-1deg); }
+}
+
+.i-bob { animation: i-bob 3.2s ease-in-out var(--d, 0s) infinite; }
+.i-sway { animation: i-sway 3.8s ease-in-out var(--d, 0s) infinite; }
+.i-pulse { animation: i-pulse 2.4s ease-in-out var(--d, 0s) infinite; }
+.i-ring { animation: i-ring 5s ease-in-out var(--d, 0s) infinite; transform-origin: 50% 20%; }
+.i-pin { animation: i-pin 3.2s ease-out var(--d, 0s) infinite; transform-origin: 50% 100%; }
+.i-twinkle { animation: i-twinkle 3.4s ease-in-out var(--d, 0s) infinite; }
+.i-tock { animation: i-tock 1.4s steps(2, jump-none) var(--d, 0s) infinite alternate; }
+.i-nudge { animation: i-nudge 1.8s ease-in-out var(--d, 0s) infinite; }
+.i-nudge-ne { animation: i-nudge-ne 1.8s ease-in-out var(--d, 0s) infinite; }
+.i-popin { animation: i-popin 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+.group:hover .ih-pop, .ih-pop:hover { animation: ih-pop 0.5s ease-out forwards; }
+.group:hover .ih-wiggle, .ih-wiggle:hover { animation: ih-wiggle 0.6s ease-in-out; }
+.group:hover .ih-fly, .ih-fly:hover { animation: ih-fly 0.8s ease-in-out; }
+.group:hover .ih-drive, .ih-drive:hover { animation: ih-drive 0.35s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-wave,
+  .animate-wave-slow,
+  .animate-ping-ring,
+  .animate-float,
+  .animate-marquee-rtl,
+  [class^="i-"],
+  [class*=" i-"],
+  [class^="ih-"],
+  [class*=" ih-"] {
+    animation: none !important;
+  }
+  .sheen:hover::before {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
 }

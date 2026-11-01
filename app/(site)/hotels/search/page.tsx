@@ -8,7 +8,7 @@ import { HotelCardSkeleton } from "@/components/ui/Skeleton";
 
 export const metadata: Metadata = {
   title: "Hotel search · Tofiza",
-  description: "Compare hotels across Bangladesh with live prices and instant confirmation.",
+  description: "Compare hotels in Cox's Bazar with live prices and instant confirmation.",
 };
 
 export interface HotelSearchParams {

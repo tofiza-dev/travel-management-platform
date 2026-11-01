@@ -149,7 +149,17 @@ export default function ContactPage() {
             </p>
             <p className="text-sm text-slate-700 flex items-start gap-2 max-w-xs">
               <MapPin size={15} className="text-brand-500 shrink-0 mt-0.5" />
-              {CONTACT.address}
+              <span>
+                <span className="block font-semibold">{CONTACT.localOffice.name}</span>
+                {CONTACT.localOffice.oneLine}
+              </span>
+            </p>
+            <p className="text-sm text-slate-500 flex items-start gap-2 max-w-xs mt-3">
+              <MapPin size={15} className="text-slate-300 shrink-0 mt-0.5" />
+              <span>
+                <span className="block text-xs uppercase tracking-wider">Dhaka</span>
+                {CONTACT.address}
+              </span>
             </p>
           </div>
           <div>

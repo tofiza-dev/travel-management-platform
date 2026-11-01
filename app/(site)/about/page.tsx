@@ -6,7 +6,7 @@ import { CONTACT } from "@/lib/config/contact";
 export const metadata: Metadata = {
   title: "About Us · Tofiza",
   description:
-    "Tofiza Tours & Travels is a Bangladesh-based hotel booking platform — verified properties, live rates, and support around the clock.",
+    "Tofiza Tours & Travels is a Bangladesh-based hotel booking platform launching in Cox's Bazar — verified properties, live rates, and support around the clock.",
 };
 
 const principles = [
@@ -44,12 +44,13 @@ export default function AboutPage() {
             </ol>
           </nav>
           <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-balance">
-            Booking a room in Bangladesh should be simple
+            Booking a room in Cox&apos;s Bazar should be simple
           </h1>
           <p className="mt-4 text-brand-100 text-base leading-relaxed max-w-2xl">
-            Tofiza Tours &amp; Travels is a booking platform built in Dhaka, for people travelling
-            here and from here. We connect you directly with properties that have real availability
-            at a real price, and we stay reachable if anything needs sorting.
+            Tofiza Tours &amp; Travels is a Bangladeshi booking platform, starting on the Cox&apos;s Bazar
+            coast. We connect you directly with properties that have real availability at a real
+            price, and we stay reachable if anything needs sorting — including from our office in
+            Kolatoli.
           </p>
         </div>
       </header>
@@ -59,10 +60,10 @@ export default function AboutPage() {
           <h2 className="text-xl font-bold text-slate-900 mb-4">What we do</h2>
           <div className="space-y-4 text-[15px] leading-relaxed text-slate-600">
             <p>
-              We list hotels and resorts across Bangladesh — Cox&apos;s Bazar, Dhaka, Sylhet,
-              Chittagong — alongside international destinations, and we take the booking end to end:
-              live rates for your dates, a room held while you pay, payment through SSLCommerz, and
-              an invoice in your inbox before you have closed the tab.
+              We list hotels in Cox&apos;s Bazar, and only Cox&apos;s Bazar, for now — and we take the
+              booking end to end: live rates for your dates, a room held while you pay, payment
+              through SSLCommerz, and an invoice in your inbox before you have closed the tab. More
+              of the coast, and more cities, will follow once we can do them as well.
             </p>
             <p>
               Properties manage their own rooms, rates and availability through our partner
@@ -116,7 +117,9 @@ export default function AboutPage() {
             Find us
           </p>
           <p className="text-sm text-slate-600">
-            Tofiza Tours &amp; Travels · {CONTACT.address}
+            Tofiza Tours &amp; Travels · {CONTACT.localOffice.oneLine}
+            <br />
+            Dhaka office · {CONTACT.address}
             <br />
             {CONTACT.phone} ·{" "}
             <a

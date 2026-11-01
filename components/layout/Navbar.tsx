@@ -98,7 +98,7 @@ export default function Navbar({
                 href={`tel:${CONTACT.phoneE164}`}
                 className="flex items-center gap-1.5 text-sm font-medium text-slate-800 hover:text-brand-600 transition-colors"
               >
-                <Phone size={15} />
+                <Phone size={15} className="i-ring" />
                 <span>Support</span>
               </a>
               {account ?? (
@@ -200,7 +200,7 @@ export default function Navbar({
             href={`tel:${CONTACT.phoneE164}`}
             className="flex items-center gap-2 text-sm text-slate-600 px-2 pt-2"
           >
-            <Phone size={15} className="text-brand-600" />
+            <Phone size={15} className="i-ring text-brand-600" />
             <span>{CONTACT.phone} (24/7)</span>
           </a>
         </div>

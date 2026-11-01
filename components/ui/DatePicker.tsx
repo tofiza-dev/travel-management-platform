@@ -171,7 +171,7 @@ export default function DatePicker({
         >
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{label}</p>
           <div className="flex items-center gap-2">
-            <Calendar size={14} className="text-brand-500 shrink-0" />
+            <Calendar size={14} className="ih-wiggle text-brand-500 shrink-0" />
             <span className={`text-sm font-bold truncate ${value ? "text-slate-800" : "text-slate-300"}`}>
               {value ? formatDisplay(value) : placeholder}
             </span>

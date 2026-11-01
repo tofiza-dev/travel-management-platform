@@ -38,7 +38,7 @@ export default function CityInput({
 
   return (
     <div className="relative min-w-0">
-      <div className="border border-slate-200 hover:border-brand-400 focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-100 rounded-xl px-3 py-2.5 transition-all bg-white">
+      <div className="group border border-slate-200 hover:border-brand-400 focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-100 rounded-xl px-3 py-2.5 transition-all bg-white">
         <label
           htmlFor={inputId}
           className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1"
@@ -46,7 +46,7 @@ export default function CityInput({
           {label}
         </label>
         <div className="flex items-center gap-2">
-          <MapPin size={14} className="text-brand-500 shrink-0" aria-hidden="true" />
+          <MapPin size={14} className="ih-pop text-brand-500 shrink-0" aria-hidden="true" />
           <input
             id={inputId}
             type="text"

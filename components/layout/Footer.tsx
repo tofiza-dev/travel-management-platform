@@ -1,8 +1,10 @@
 import { cacheLife } from "next/cache";
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, Mail, MapPin, ArrowRight } from "lucide-react";
+import { Phone, Mail, MapPin } from "lucide-react";
 import { CONTACT, SOCIAL_LINKS } from "@/lib/config/contact";
+import Wave from "@/components/home/Wave";
+import PartnerOfficeCard from "./PartnerOfficeCard";
 
 /**
  * Every href here must resolve to a real route. Careers, Press and Blog used to
@@ -83,32 +85,22 @@ export default async function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-slate-900 text-slate-300">
-      {/* Property owner CTA — a floating card, not a full-bleed strip, so it
-          reads as its own moment rather than another footer band. */}
+    <footer className="relative bg-white text-brand-100">
+      {/* Property-owner invitation and the Cox's Bazar office, as one floating
+          card rather than a full-bleed strip. */}
       <div className="bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
-          <div className="rounded-2xl sm:rounded-3xl bg-brand-700 px-6 py-10 sm:px-12 sm:py-14 text-center">
-            <h3 className="text-2xl sm:text-4xl font-bold text-white text-balance">
-              Own a property? List it here
-            </h3>
-            <p className="mt-3 text-brand-200 text-sm sm:text-base max-w-xl mx-auto">
-              Reach thousands of travellers searching Tofiza every day — listing takes
-              minutes and there is no upfront cost.
-            </p>
-            <Link
-              href="/auth/register/partner"
-              className="mt-7 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold text-brand-700 shadow-sm transition-colors hover:bg-white/90"
-            >
-              List Your Property
-              <ArrowRight size={16} />
-            </Link>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6 sm:pt-14 sm:pb-8">
+          <PartnerOfficeCard />
         </div>
       </div>
 
+      {/* Everything below the wave sits on the navy band; the wave is the same
+          drifting one the homepage uses, so the page ends the way it began. */}
+      <div className="relative bg-brand-900 grain">
+      <Wave className="text-white rotate-180 -mb-px" />
+
       {/* Main footer */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-10">
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-x-6 gap-y-10 sm:gap-10">
           {/* Brand col */}
           <div className="col-span-2 space-y-5">
@@ -119,38 +111,49 @@ export default async function Footer() {
               height={90}
               className="h-9 w-auto object-contain brightness-0 invert"
             />
-            <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
-              Tofiza is your premium travel companion for booking hotels across
-              Bangladesh and beyond, with flights on the way. Experience travel
-              the way it should be — simple, affordable, and memorable.
+            <p className="text-brand-200 text-sm leading-relaxed max-w-xs">
+              Tofiza books verified beachside stays in Cox&apos;s Bazar — live rates,
+              a room held while you pay, and a team in Kolatoli if anything needs
+              sorting. More destinations and flights will follow; for now we do
+              one place properly.
             </p>
             <div className="space-y-2">
               <a
                 href={`tel:${CONTACT.phoneE164}`}
                 className="flex items-center gap-2 text-sm hover:text-white transition-colors"
               >
-                <Phone size={14} className="text-brand-400 shrink-0" />
+                <Phone size={14} className="i-ring text-secondary-300 shrink-0" />
                 {CONTACT.phone} (24/7)
               </a>
               <a
                 href={`mailto:${CONTACT.supportEmail}`}
                 className="flex items-center gap-2 text-sm hover:text-white transition-colors"
               >
-                <Mail size={14} className="text-brand-400 shrink-0" />
+                <Mail size={14} className="i-bob text-secondary-300 shrink-0" />
                 {CONTACT.supportEmail}
-                <span className="text-slate-500 text-xs">· support</span>
+                <span className="text-brand-300 text-xs">· support</span>
               </a>
               <a
                 href={`mailto:${CONTACT.bookingEmail}?subject=Booking%20enquiry`}
                 className="flex items-center gap-2 text-sm hover:text-white transition-colors"
               >
-                <Mail size={14} className="text-brand-400 shrink-0" />
+                <Mail size={14} className="i-bob [--d:0.5s] text-secondary-300 shrink-0" />
                 {CONTACT.bookingEmail}
-                <span className="text-slate-500 text-xs">· bookings</span>
+                <span className="text-brand-300 text-xs">· bookings</span>
               </a>
-              <span className="flex items-center gap-2 text-sm">
-                <MapPin size={14} className="text-brand-400 shrink-0" />
-                {CONTACT.address}
+              <span className="flex items-start gap-2 text-sm">
+                <MapPin size={14} className="i-pin text-secondary-300 shrink-0 mt-0.5" />
+                <span>
+                  {CONTACT.localOffice.oneLine}
+                  <span className="block text-brand-300 text-xs">Cox&apos;s Bazar office</span>
+                </span>
+              </span>
+              <span className="flex items-start gap-2 text-sm">
+                <MapPin size={14} className="i-pin [--d:1.2s] text-secondary-300 shrink-0 mt-0.5" />
+                <span>
+                  {CONTACT.address}
+                  <span className="block text-brand-300 text-xs">Dhaka</span>
+                </span>
               </span>
             </div>
             {/* Social links — absent entirely until a real URL is configured */}
@@ -256,22 +259,23 @@ export default async function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-slate-800">
+      <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
-            <p className="text-slate-500 text-xs">
+            <p className="text-brand-300 text-xs">
               © {year} Tofiza. All rights reserved. Registered in Bangladesh.
             </p>
             <a
               href="https://seltiv.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-500 text-xs hover:text-white transition-colors"
+              className="text-brand-300 text-xs hover:text-white transition-colors"
             >
               Developed by <span className="font-semibold">SELTIV</span>
             </a>
           </div>
         </div>
+      </div>
       </div>
     </footer>
   );

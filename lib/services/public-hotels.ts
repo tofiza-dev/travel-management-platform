@@ -451,3 +451,90 @@ export async function getLivePricing(
 function escapeRegex(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
+
+export interface LaunchSnapshot {
+  stays: number;
+  /** Cheapest nightly rate across live stays, if any have a price. */
+  from: number | null;
+  currency: string;
+  /** Each live stay's `location`, so the page can say which areas it really covers. */
+  locations: string[];
+}
+
+/** What is genuinely on sale in one city right now. Feeds the homepage proof strip and coast map. */
+export async function getLaunchSnapshot(city: string): Promise<LaunchSnapshot> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(tags.home(), tags.hotels());
+
+  await connectDB();
+  const rows = await Hotel.find({
+    status: "published",
+    city: new RegExp(`^${escapeRegex(city)}$`, "i"),
+  })
+    .select("location priceFrom currency")
+    .lean();
+
+  const prices = rows.map((h) => h.priceFrom).filter((p) => p > 0);
+  return {
+    stays: rows.length,
+    from: prices.length ? Math.min(...prices) : null,
+    currency: rows[0]?.currency ?? "BDT",
+    locations: rows.map((h) => h.location),
+  };
+}
+
+export interface HomeReview {
+  id: string;
+  authorName: string;
+  rating: number;
+  title?: string;
+  body: string;
+  tripType?: string;
+  hotelName: string;
+  hotelHref: string;
+  createdAt: string;
+}
+
+/**
+ * Recent published reviews for live stays in one city. Only reviews whose hotel
+ * is still on sale are returned, so a card never links to a listing that 404s.
+ */
+export async function getHomeReviews(city: string, limit = 9): Promise<HomeReview[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(tags.home(), tags.hotels());
+
+  await connectDB();
+  const hotels = await Hotel.find({
+    status: "published",
+    city: new RegExp(`^${escapeRegex(city)}$`, "i"),
+  })
+    .select("name slug city")
+    .lean();
+  if (hotels.length === 0) return [];
+
+  const byId = new Map(hotels.map((h) => [String(h._id), h]));
+  const reviews = await Review.find({ hotelId: { $in: hotels.map((h) => h._id) }, status: "published" })
+    .sort({ createdAt: -1 })
+    .limit(limit)
+    .lean();
+
+  return reviews.flatMap((r) => {
+    const hotel = byId.get(String(r.hotelId));
+    if (!hotel) return [];
+    return [
+      {
+        id: String(r._id),
+        authorName: r.authorName,
+        rating: r.rating,
+        title: r.title,
+        body: r.body,
+        tripType: r.tripType,
+        hotelName: hotel.name,
+        hotelHref: `/hotels/${hotel.city.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}/${hotel.slug}`,
+        createdAt: r.createdAt.toISOString(),
+      },
+    ];
+  });
+}

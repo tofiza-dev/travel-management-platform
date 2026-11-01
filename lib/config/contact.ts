@@ -14,6 +14,13 @@ export const CONTACT = {
   /** Dialable form, for `tel:` links. */
   phoneE164: "+8801931113300",
   address: "Gulshan, Dhaka 1212, Bangladesh",
+  /** Where guests can walk in. The launch city's on-the-ground office. */
+  localOffice: {
+    name: "Tofiza Tours & Travels Office",
+    lines: ["Level-1, Hotel Water Orchid", "Kolatoli, Cox's Bazar"],
+    /** One-line form for inline use. */
+    oneLine: "Level-1, Hotel Water Orchid, Kolatoli, Cox's Bazar",
+  },
 } as const;
 
 /**
